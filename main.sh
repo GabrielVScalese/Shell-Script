@@ -1,3 +1,5 @@
+# less /etc/passwd
+
 create_user () {
     clear
     echo '--- Inclusao de usuario'
