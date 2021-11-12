@@ -31,6 +31,41 @@ delete_user () {
     read enter
 }
 
+open_permissions () {
+    clear
+    second_menu_option=0
+
+    while [ $second_menu_option -ne 99 ]
+	do
+	    clear
+	    echo '--- Você está editando as permissões de acesso'
+
+	    echo '\n--- Menu ---'
+	    echo '\n1) Modificar dono de arquivo ou diretório'
+	    echo '2) Modificar grupo dono de arquivo ou diretório'
+	    echo '3) Modificar permissões de arquivo ou diretório'
+
+	    echo '\nDigite uma opção ou digite 99 para voltar: '
+	    read second_menu_option
+
+	    if [ $second_menu_opition -eq 1 ]
+	        then
+	    	    echo 'Vazquez faz'
+		    read enter
+	        elif [ $second_menu_opition -eq 2 ]
+		    then
+			echo 'Scalese faz'
+			read enter
+		elif [ $second_menu_opition -eq 3 ]
+		    then
+			echo 'Felis faz'
+			read enter
+		else
+		    break
+	    fi
+	done
+}
+
 option=0
 while [ $option -ne 99 ] 
     do
@@ -53,8 +88,7 @@ while [ $option -ne 99 ]
                     delete_user
             elif [ $option -eq 3 ]
                 then
-                    clear
-                    echo 'Opcao 3'
+                    open_permissions
             else
               break  
         fi
