@@ -65,9 +65,9 @@ open_permissions () {
 	    echo '3) Modificar permissões de arquivo ou diretório'
 
 	    echo '\nDigite uma opção ou digite 99 para voltar: '
-	    read secondMenuOptionmodify
+	    read secondMenuOption
 
-        if [ $secondMenuOptionmodify -eq 2 ]
+        if [ $secondMenuOption -eq 2 ]
 		    then
 			change_group
 		elif [ $secondMenuOption -eq 3 ]
