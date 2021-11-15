@@ -1,40 +1,58 @@
-# less /etc/passwd
+# less /etc/passwd -> listar usuarios
+# groupadd <nome_group> -> criar grupo
+# cat /etc/group -> listar grupos
+# ls -l <arquivo_ou_diretorio> -> ver dono
+
+read_enter () {
+    echo '\n Pressione [ENTER] para continuar'
+    read enter
+}
 
 create_user () {
     clear
-    echo '--- Inclusao de usuario'
+    echo '--- Inclusao de usuario ---'
 
-    echo "\n\nDigite o nome do usuario: \n"
+    echo "\n\nDigite o nome do usuario:"
     read username
 
-    echo "\n Digite a nova senha: \n"
+    echo "\n Digite a nova senha:"
     read password
-
-    sudo useradd -p $password $username
+    
+    echo '\nCriando usuario...'
+    sudo useradd -p $password $username ||
+    {
+        read_enter
+        return
+    }
 
     echo '\n Usuario criado com sucesso!'
 
-    echo '\n Pressione [ENTER] para continuar'
-    read enter
+    read_enter
 }
 
 delete_user () {
     clear
-    echo "Digite o nome do usuario: \n"
+    echo '--- Exclusao de usuario ---'
+
+    echo "\n\nDigite o nome do usuario:"
     read username
 
-    sudo userdel $username
+    echo '\nExcluindo usuario...'
+    sudo userdel $username ||
+    {
+        read_enter
+        return
+    }
 
     echo '\n Usuario excluido com sucesso!'
 
-    echo '\n Pressione [ENTER] para continuar'
-    read enter
+    read_enter
 }
 
 open_permissions () {
     clear
-    secondMenuOption=0
 
+    secondMenuOption=0
     while [ $secondMenuOption -ne 99 ]
 	do
 	    clear
@@ -46,24 +64,40 @@ open_permissions () {
 	    echo '3) Modificar permissões de arquivo ou diretório'
 
 	    echo '\nDigite uma opção ou digite 99 para voltar: '
-	    read secondMenuOption
+	    read secondMenuOptionmodify
 
-	    if [ $secondMenuOption -eq 1 ]
-	        then
-	    	    echo 'Vazquez faz'
-		    read enter
-	        elif [ $secondMenuOption -eq 2 ]
+        if [ $secondMenuOptionmodify -eq 2 ]
 		    then
-			echo 'Scalese faz'
-			read enter
+			change_group
 		elif [ $secondMenuOption -eq 3 ]
 		    then
 			change_file_permissions
-			
 		else
 		    break
 	    fi
 	done
+}
+
+change_group() {
+    clear 
+    echo '--- Alteracao de grupo dono do arquivo ou diretorio ---'
+
+    echo '\n\nDigite o nome do arquivo ou diretorio:'
+    read objectName
+
+    echo '\nDigite o nome do grupo:'
+    read group
+
+    echo '\nAlterando grupo dono...'
+    sudo chgrp $group $objectName || 
+    {
+        read_enter
+        return
+    }
+
+    echo 'Grupo dono alterado com sucesso!'
+
+    read_enter
 }
 
 change_file_permissions(){
@@ -218,10 +252,6 @@ change_file_permissions(){
 	    fi
 	done
     fi
-
-
-    
-    
 }
 
 option=0
@@ -241,14 +271,15 @@ while [ $option -ne 99 ]
         if [ $option -eq 1 ]
             then
                 create_user
-            elif [ $option -eq 2 ]
-                then
-                    delete_user
-            elif [ $option -eq 3 ]
-                then
-                    open_permissions
-            else
-              break  
+        elif [ $option -eq 2 ]
+            then
+                delete_user
+        elif [ $option -eq 3 ]
+            then
+                open_permissions
+        elif [ $option -eq 99 ]
+            then
+                break
         fi
     done
 
