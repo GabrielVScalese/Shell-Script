@@ -33,9 +33,9 @@ delete_user () {
 
 open_permissions () {
     clear
-    second_menu_option=0
+    secondMenuOption=0
 
-    while [ $second_menu_option -ne 99 ]
+    while [ $secondMenuOption -ne 99 ]
 	do
 	    clear
 	    echo '--- Você está editando as permissões de acesso'
@@ -46,24 +46,182 @@ open_permissions () {
 	    echo '3) Modificar permissões de arquivo ou diretório'
 
 	    echo '\nDigite uma opção ou digite 99 para voltar: '
-	    read second_menu_option
+	    read secondMenuOption
 
-	    if [ $second_menu_opition -eq 1 ]
+	    if [ $secondMenuOption -eq 1 ]
 	        then
 	    	    echo 'Vazquez faz'
 		    read enter
-	        elif [ $second_menu_opition -eq 2 ]
+	        elif [ $secondMenuOption -eq 2 ]
 		    then
 			echo 'Scalese faz'
 			read enter
-		elif [ $second_menu_opition -eq 3 ]
+		elif [ $secondMenuOption -eq 3 ]
 		    then
-			echo 'Felis faz'
-			read enter
+			change_file_permissions
+			
 		else
 		    break
 	    fi
 	done
+}
+
+change_file_permissions(){
+    clear
+
+    echo 'Digite o arquivo ou diretório que deseja modificar suas permissões: \n'
+    read file
+
+    if [ ! -d "$file" && ! -f "$file"]
+    then
+	echo "Arquivo ou diretório não existe!"
+	read enter
+	break
+    else
+	thirdMenuOption=0
+    changePermissionsToOwner=false
+    changePermissionsToGroup=false
+    changePermissionsToOther=false
+    changePermissionsToAll=false
+
+    while [ $thirdMenuOption -ne 99 ]
+	do
+	    clear
+	    echo '--- Você deseja alterar as permissões do: \n'
+
+	    echo '\n1) Dono'
+	    echo '2) Grupo'
+	    echo '3) Outros'
+	    echo '4) Todos'
+
+	    echo '\nDigite uma opção ou digite 99 para voltar: '
+	    read thirdMenuOption
+
+	    if [ $thirdMenuOption -eq 1 ]
+	        then
+	    	    changePermissionsToOwner=true
+		    break
+	        elif [ $thirdMenuOption -eq 2 ]
+		    then
+			changePermissionsToGroup=true
+			break
+		elif [ $thirdMenuOption -eq 3 ]
+		    then
+			changePermissionsToOther=true
+			break
+		elif [ $thirdMenuOption -eq 4 ]
+		    then
+			changePermissionsToAll=true
+			break
+		else
+		    break
+	    fi
+	done
+
+     fourthMenuOption=0
+
+     while [ $fourthMenuOption -ne 99 ]
+	do
+	    clear
+	    echo '--- o dono/grupo/outros terá permissão de: \n'
+
+	    echo '\n1) Nenhuma permissão'
+	    echo '2) Escrita'
+	    echo '3) Leitura'
+	    echo '4) Execução'
+
+	    echo '\nDigite uma opção ou digite 99 para voltar: '
+	    read fourthMenuOption
+
+	    if [ $fourthMenuOption -eq 1 ]
+	        then
+	    	    if $changePermissionsToOwner
+			then
+			    echo "trocar permissões dono"
+			    read enter
+		        elif $changePermissionsToGroup
+			    then
+			    	echo "trocar permissões grupo"
+				read enter
+			elif $changePermissionsToOther
+			    then
+				echo "trocar permissões outros"
+				read enter
+		        elif $changePermissionsToAll
+			    then
+				echo "trocar permissões todos"
+				read enter
+		    fi
+		break
+	        elif [ $fourthMenuOption -eq 2 ]
+		    then
+			if $changePermissionsToOwner
+			    then
+			    	echo "trocar permissões dono"
+			    	read enter
+			    elif $changePermissionsToGroup
+			    	then
+			    	    echo "trocar permissões grupo"
+				    read enter
+			    elif $changePermissionsToOther
+			    	then
+				    echo "trocar permissões outros"
+				    read enter
+			    elif $changePermissionsToAll
+			    	then
+				    echo "trocar permissões todos"
+				    read enter
+			fi
+			break
+		elif [ $fourthMenuOption -eq 3 ]
+		    then
+			if $changePermissionsToOwner
+			    then
+			    	echo "trocar permissões dono"
+			    	read enter
+		            elif $changePermissionsToGroup
+			    	then
+			    	    echo "trocar permissões grupo"
+				    read enter
+			    elif $changePermissionsToOther
+			    	then
+				    echo "trocar permissões outros"
+				    read enter
+		            elif $changePermissionsToAll
+			    	then
+				    echo "trocar permissões todos"
+				    read enter
+			fi
+			break
+		elif [ $fourthMenuOption -eq 4 ]
+		    then
+			if $changePermissionsToOwner
+			    then
+			    	echo "trocar permissões dono"
+			    	read enter
+		            elif $changePermissionsToGroup
+			    	then
+			    	    echo "trocar permissões grupo"
+				    read enter
+			    elif $changePermissionsToOther
+			    	then
+				    echo "trocar permissões outros"
+				    read enter
+		            elif $changePermissionsToAll
+			    	then
+				    echo "trocar permissões todos"
+				    read enter
+			fi
+			break
+		else
+		    break
+	    fi
+	done
+    fi
+
+
+    
+    
 }
 
 option=0
@@ -93,6 +251,4 @@ while [ $option -ne 99 ]
               break  
         fi
     done
-
-
 
