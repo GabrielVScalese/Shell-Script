@@ -1,3 +1,4 @@
+# Comnados para verificacao:
 # less /etc/passwd -> listar usuarios
 # groupadd <nome_group> -> criar grupo
 # cat /etc/group -> listar grupos
