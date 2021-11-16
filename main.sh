@@ -1,3 +1,4 @@
+#!/bin/bash
 # Comnados para verificacao:
 # less /etc/passwd -> listar usuarios
 # groupadd <nome_group> -> criar grupo
@@ -5,47 +6,48 @@
 # ls -l <arquivo_ou_diretorio> -> ver dono
 
 read_enter () {
-    echo '\n Pressione [ENTER] para continuar'
+    echo -e '\nPressione [ENTER] para continuar'
     read enter
 }
 
 create_user () {
     clear
-    echo '--- Inclusao de usuario ---'
+    echo '--- Inclusão de usuário ---'
 
-    echo "\n\nDigite o nome do usuario:"
+    echo -e "\n\nDigite o nome do usuário:"
     read username
 
-    echo "\n Digite a nova senha:"
-    read password
+	echo -e "\nDigite a nova senha:"
+    read -s password
+	echo
     
-    echo '\nCriando usuario...'
+    echo -e '\nCriando usuário...'
     sudo useradd -p $password $username ||
     {
         read_enter
         return
     }
 
-    echo '\n Usuario criado com sucesso!'
+    echo -e '\nUsuário criado com sucesso!'
 
     read_enter
 }
 
 delete_user () {
     clear
-    echo '--- Exclusao de usuario ---'
+    echo '--- Exclusão de usuário ---'
 
-    echo "\n\nDigite o nome do usuario:"
+    echo -e "\n\nDigite o nome do usuário:"
     read username
 
-    echo '\nExcluindo usuario...'
+    echo -e '\nExcluindo usuário...'
     sudo userdel $username ||
     {
         read_enter
         return
     }
 
-    echo '\n Usuario excluido com sucesso!'
+    echo -e '\nUsuario excluído com sucesso!'
 
     read_enter
 }
@@ -59,37 +61,41 @@ open_permissions () {
 	    clear
 	    echo '--- Você está editando as permissões de acesso'
 
-	    echo '\n--- Menu ---'
-	    echo '\n1) Modificar dono de arquivo ou diretório'
+	    echo -e '\n--- Menu ---'
+	    echo -e '\n1) Modificar dono de arquivo ou diretório'
 	    echo '2) Modificar grupo dono de arquivo ou diretório'
 	    echo '3) Modificar permissões de arquivo ou diretório'
 
-	    echo '\nDigite uma opção ou digite 99 para voltar: '
+	    echo -e '\nDigite uma opção ou digite 99 para voltar: '
 	    read secondMenuOption
 
-        if [ $secondMenuOption -eq 2 ]
+		if [ $secondMenuOption -eq 1 ]
+			then
+				change_owner_user
+        elif [ $secondMenuOption -eq 2 ]
 		    then
-			change_group
+				change_owner_group
 		elif [ $secondMenuOption -eq 3 ]
 		    then
-			change_file_permissions
-		else
-		    break
+				change_file_permissions
+		elif [ $secondMenuOption -eq 99 ]
+			then
+				break
 	    fi
 	done
 }
 
-change_group() {
+change_owner_group() {
     clear 
-    echo '--- Alteracao de grupo dono do arquivo ou diretorio ---'
+    echo '--- Alteracão de grupo dono do arquivo ou diretório ---'
 
-    echo '\n\nDigite o nome do arquivo ou diretorio:'
+    echo -e '\n\nDigite o nome do arquivo ou diretório:'
     read objectName
 
-    echo '\nDigite o nome do grupo:'
+    echo -e '\nDigite o nome do grupo:'
     read group
 
-    echo '\nAlterando grupo dono...'
+    echo -e '\nAlterando grupo dono...'
     sudo chgrp $group $objectName || 
     {
         read_enter
@@ -101,10 +107,32 @@ change_group() {
     read_enter
 }
 
+change_owner_user() {
+    clear 
+    echo '--- Alteracão de dono do arquivo ou diretório ---'
+
+    echo -e '\n\nDigite o nome do arquivo ou diretório:'
+    read objectName
+
+    echo -e '\nDigite o nome do novo dono:'
+    read username
+
+    echo -e '\nAlterando dono...'
+    sudo chown $username $objectName || 
+    {
+        read_enter
+        return
+    }
+
+    echo 'Dono alterado com sucesso!'
+
+    read_enter
+}
+
 change_file_permissions(){
     clear
 
-    echo 'Digite o arquivo ou diretório que deseja modificar suas permissões: \n'
+    echo -e 'Digite o arquivo ou diretório que deseja modificar suas permissões: \n'
     read file
 
     if [ ! -d "$file" && ! -f "$file"]
@@ -122,14 +150,14 @@ change_file_permissions(){
     while [ $thirdMenuOption -ne 99 ]
 	do
 	    clear
-	    echo '--- Você deseja alterar as permissões do: \n'
+	    echo -e '--- Você deseja alterar as permissões do: \n'
 
-	    echo '\n1) Dono'
+	    echo -e '\n1) Dono'
 	    echo '2) Grupo'
 	    echo '3) Outros'
 	    echo '4) Todos'
 
-	    echo '\nDigite uma opção ou digite 99 para voltar: '
+	    echo -e '\nDigite uma opção ou digite 99 para voltar: '
 	    read thirdMenuOption
 
 	    if [ $thirdMenuOption -eq 1 ]
@@ -158,14 +186,14 @@ change_file_permissions(){
      while [ $fourthMenuOption -ne 99 ]
 	do
 	    clear
-	    echo '--- o dono/grupo/outros terá permissão de: \n'
+	    echo -e '--- o dono/grupo/outros terá permissão de: \n'
 
-	    echo '\n1) Nenhuma permissão'
+	    echo -e '\n1) Nenhuma permissão'
 	    echo '2) Escrita'
 	    echo '3) Leitura'
 	    echo '4) Execução'
 
-	    echo '\nDigite uma opção ou digite 99 para voltar: '
+	    echo -e '\nDigite uma opção ou digite 99 para voltar: '
 	    read fourthMenuOption
 
 	    if [ $fourthMenuOption -eq 1 ]
@@ -261,12 +289,12 @@ while [ $option -ne 99 ]
         clear
         echo '==== Gerenciador de Usuario e Permissoes ===='
 
-        echo '\n--- Menu ---'
-        echo '\n1) Criar Usuario'
+        echo -e '\n--- Menu ---'
+        echo -e '\n1) Criar Usuario'
         echo '2) Excluir usuario'
         echo '3) Permissoes de arquivo'
 
-        echo '\nDigite uma opcao ou digite 99 para encerrar:'
+        echo -e '\nDigite uma opcao ou digite 99 para encerrar:'
         read option
 
         if [ $option -eq 1 ]
