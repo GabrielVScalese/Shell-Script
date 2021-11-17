@@ -141,10 +141,7 @@ change_file_permissions(){
 	break
     else
 	thirdMenuOption=0
-    changePermissionsToOwner=false
-    changePermissionsToGroup=false
-    changePermissionsToOther=false
-    changePermissionsToAll=false
+    
 
     while [ $thirdMenuOption -ne 99 ]
 	do
@@ -158,26 +155,10 @@ change_file_permissions(){
 
 	    echo -e '\nDigite uma opção ou digite 99 para voltar: '
 	    read thirdMenuOption
-
-	    if [ $thirdMenuOption -eq 1 ]
-	        then
-	    	    changePermissionsToOwner=true
-		    break
-	        elif [ $thirdMenuOption -eq 2 ]
-		    then
-			changePermissionsToGroup=true
-			break
-		elif [ $thirdMenuOption -eq 3 ]
-		    then
-			changePermissionsToOther=true
-			break
-		elif [ $thirdMenuOption -eq 4 ]
-		    then
-			changePermissionsToAll=true
-			break
-		else
-		    break
-	    fi
+	    if [ $thirdMenuOption -eq 1 -o $thirdMenuOption -eq 2 -o $thirdMenuOption -eq 3 -o $thirdMenuOption -eq 4 ]
+		then
+		   break
+   	    fi
 	done
 
      fourthMenuOption=0
@@ -197,82 +178,98 @@ change_file_permissions(){
 
 	    if [ $fourthMenuOption -eq 1 ]
 	        then
-	    	    if $changePermissionsToOwner
+	    	    if [ $thirdMenuOption -eq 1 ]
 			then
-			    echo "trocar permissões dono"
-			    read enter
-		        elif $changePermissionsToGroup
+			    chmod -rwx $file
+			    echo "Removidas todas as permissões do dono"
+			    read_enter
+		        elif [ $thirdMenuOption -eq 2 ]
 			    then
-			    	echo "trocar permissões grupo"
-				read enter
-			elif $changePermissionsToOther
+			    	chmod g-rwx $file
+			        echo "Removidas todas as permissões do grupo"
+			    	read_enter
+			elif [ $thirdMenuOption -eq 3 ]
 			    then
-				echo "trocar permissões outros"
-				read enter
-		        elif $changePermissionsToAll
+				chmod o-rwx $file
+			    	echo "Removidas todas as permissões de outros"
+			    	read_enter
+		        elif [ $thirdMenuOption -eq 4 ]
 			    then
-				echo "trocar permissões todos"
-				read enter
+				chmod ugo-rwx $file
+			    	echo "Removidas todas as permissões de todos"
+			    	read_enter
 		    fi
 		break
 	        elif [ $fourthMenuOption -eq 2 ]
 		    then
-			if $changePermissionsToOwner
+			if [ $thirdMenuOption -eq 1 ]
 			    then
-			    	echo "trocar permissões dono"
-			    	read enter
-			    elif $changePermissionsToGroup
+			    	chmod +w $file
+			    	echo "Dono agora tem permissão de escrita"
+			    	read_enter
+			    elif [ $thirdMenuOption -eq 2 ]
 			    	then
-			    	    echo "trocar permissões grupo"
-				    read enter
-			    elif $changePermissionsToOther
+			    	    chmod g+w $file
+			    	    echo "Grupo agora tem permissão de escrita"
+			    	    read_enter
+			    elif [ $thirdMenuOption -eq 3 ]
 			    	then
-				    echo "trocar permissões outros"
-				    read enter
-			    elif $changePermissionsToAll
+				    chmod o+w $file
+			    	    echo "Outros agora tem permissão de escrita"
+			    	    read_enter
+			    elif [ $thirdMenuOption -eq 4 ]
 			    	then
-				    echo "trocar permissões todos"
-				    read enter
+				    chmod ugo+w $file
+			    	    echo "Todos agora tem permissão de escrita"
+			    	    read_enter
 			fi
 			break
 		elif [ $fourthMenuOption -eq 3 ]
 		    then
-			if $changePermissionsToOwner
+			if [ $thirdMenuOption -eq 1 ]
 			    then
-			    	echo "trocar permissões dono"
-			    	read enter
-		            elif $changePermissionsToGroup
+			    	chmod +r $file
+			    	echo "Dono agora tem permissão de leitura"
+			    	read_enter
+		            elif [ $thirdMenuOption -eq 2 ]
 			    	then
-			    	    echo "trocar permissões grupo"
-				    read enter
-			    elif $changePermissionsToOther
+			    	    chmod g+r $file
+			    	    echo "Grupo agora tem permissão de leitura"
+			    	    read_enter
+			    elif [ $thirdMenuOption -eq 3 ]
 			    	then
-				    echo "trocar permissões outros"
-				    read enter
-		            elif $changePermissionsToAll
+				    chmod o+r $file
+			    	    echo "Outros agora tem permissão de leitura"
+			    	    read_enter
+		            elif [ $thirdMenuOption -eq 4 ]
 			    	then
-				    echo "trocar permissões todos"
-				    read enter
+				    chmod ugo+r $file
+			    	    echo "Todos agora tem permissão de leitura"
+			    	    read_enter
 			fi
 			break
 		elif [ $fourthMenuOption -eq 4 ]
 		    then
-			if $changePermissionsToOwner
+			if [ $thirdMenuOption -eq 1 ]
 			    then
-			    	echo "trocar permissões dono"
-			    	read enter
-		            elif $changePermissionsToGroup
+			    	chmod +x $file
+			    	echo "Dono agora tem permissão de execução"
+			    	read_enter
+		            elif [ $thirdMenuOption -eq 2 ]
 			    	then
-			    	    echo "trocar permissões grupo"
-				    read enter
-			    elif $changePermissionsToOther
+			    	    chmod g+x $file
+			    	    echo "Grupo agora tem permissão de execução"
+			    	    read_enter
+			    elif [ $thirdMenuOption -eq 3 ]
 			    	then
-				    echo "trocar permissões outros"
-				    read enter
-		            elif $changePermissionsToAll
+				    chmod o+x $file
+			    	    echo "Outros agora tem permissão de execução"
+			    	    read_enter
+		            elif [ $thirdMenuOption -eq 4 ]
 			    	then
-				    echo "trocar permissões todos"
-				    read enter
+				    chmod ugo+x $file
+			    	    echo "Todos agora tem permissão de execução"
+			    	    read_enter
 			fi
 			break
 		else
@@ -310,4 +307,3 @@ while [ $option -ne 99 ]
                 break
         fi
     done
-
