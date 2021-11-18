@@ -2,7 +2,7 @@
 # less /etc/passwd -> listar usuarios
 # groupadd <nome_group> -> criar grupo
 # cat /etc/group -> listar grupos
-# ls -l <arquivo_ou_diretorio> -> ver dono
+# ls -l <arquivo_ou_diretorio> -> ver donos e permissoes
 
 read_enter () {
     echo -e '\nPressione [ENTER] para continuar'
@@ -135,148 +135,147 @@ change_file_permissions(){
     read file
 
     if [ ! -d "$file" && ! -f "$file"]
-    then
-	echo "Arquivo ou diretório não existe!"
-	read enter
-	break
-    else
-	thirdMenuOption=0
-    
-
-    while [ $thirdMenuOption -ne 99 ]
-	do
-	    clear
-	    echo -e '--- Você deseja alterar as permissões do: \n'
-
-	    echo -e '\n1) Dono'
-	    echo '2) Grupo'
-	    echo '3) Outros'
-	    echo '4) Todos'
-
-	    echo -e '\nDigite uma opção ou digite 99 para voltar: '
-	    read thirdMenuOption
-	    if [ $thirdMenuOption -eq 1 -o $thirdMenuOption -eq 2 -o $thirdMenuOption -eq 3 -o $thirdMenuOption -eq 4 ]
 		then
-		   break
-   	    fi
-	done
+			echo "Arquivo ou diretório não existe!"
+			read enter
+		break
+    else
+		thirdMenuOption=0
+    
+    while [ $thirdMenuOption -ne 99 ]
+		do
+			clear
+			echo -e '--- Você deseja alterar as permissões do: \n'
+
+			echo -e '\n1) Dono'
+			echo '2) Grupo'
+			echo '3) Outros'
+			echo '4) Todos'
+
+			echo -e '\nDigite uma opção ou digite 99 para voltar: '
+			read thirdMenuOption
+			if [ $thirdMenuOption -eq 1 -o $thirdMenuOption -eq 2 -o $thirdMenuOption -eq 3 -o $thirdMenuOption -eq 4 ]
+			then
+				break
+			fi
+		done
 
      fourthMenuOption=0
 
      while [ $fourthMenuOption -ne 99 ]
-	do
-	    clear
-	    echo -e '--- o dono/grupo/outros terá permissão de: \n'
+		do
+			clear
+			echo -e '--- o dono/grupo/outros terá permissão de: \n'
 
-	    echo -e '\n1) Nenhuma permissão'
-	    echo '2) Escrita'
-	    echo '3) Leitura'
-	    echo '4) Execução'
+			echo -e '\n1) Nenhuma permissão'
+			echo '2) Escrita'
+			echo '3) Leitura'
+			echo '4) Execução'
 
-	    echo -e '\nDigite uma opção ou digite 99 para voltar: '
-	    read fourthMenuOption
+			echo -e '\nDigite uma opção ou digite 99 para voltar: '
+			read fourthMenuOption
 
-	    if [ $fourthMenuOption -eq 1 ]
-	        then
-	    	    if [ $thirdMenuOption -eq 1 ]
-			then
-			    chmod -rwx $file
-			    echo "Removidas todas as permissões do dono"
-			    read_enter
-		        elif [ $thirdMenuOption -eq 2 ]
-			    then
-			    	chmod g-rwx $file
-			        echo "Removidas todas as permissões do grupo"
-			    	read_enter
-			elif [ $thirdMenuOption -eq 3 ]
-			    then
-				chmod o-rwx $file
-			    	echo "Removidas todas as permissões de outros"
-			    	read_enter
-		        elif [ $thirdMenuOption -eq 4 ]
-			    then
-				chmod ugo-rwx $file
-			    	echo "Removidas todas as permissões de todos"
-			    	read_enter
-		    fi
-		break
-	        elif [ $fourthMenuOption -eq 2 ]
-		    then
-			if [ $thirdMenuOption -eq 1 ]
-			    then
-			    	chmod +w $file
-			    	echo "Dono agora tem permissão de escrita"
-			    	read_enter
-			    elif [ $thirdMenuOption -eq 2 ]
-			    	then
-			    	    chmod g+w $file
-			    	    echo "Grupo agora tem permissão de escrita"
-			    	    read_enter
-			    elif [ $thirdMenuOption -eq 3 ]
-			    	then
-				    chmod o+w $file
-			    	    echo "Outros agora tem permissão de escrita"
-			    	    read_enter
-			    elif [ $thirdMenuOption -eq 4 ]
-			    	then
-				    chmod ugo+w $file
-			    	    echo "Todos agora tem permissão de escrita"
-			    	    read_enter
-			fi
+			if [ $fourthMenuOption -eq 1 ]
+				then
+					if [ $thirdMenuOption -eq 1 ]
+				then
+					chmod u=- $file
+					echo "Removidas todas as permissões do dono"
+					read_enter
+				elif [ $thirdMenuOption -eq 2 ]
+					then
+						chmod g=- $file
+						echo -e "\nRemovidas todas as permissões do grupo"
+						read_enter
+				elif [ $thirdMenuOption -eq 3 ]
+					then
+						chmod o=- $file
+						echo -e "\nRemovidas todas as permissões de outros"
+						read_enter
+					elif [ $thirdMenuOption -eq 4 ]
+						then
+							chmod ugo-rwx $file
+							echo -e "\nRemovidas todas as permissões de todos"
+							read_enter
+				fi
 			break
-		elif [ $fourthMenuOption -eq 3 ]
-		    then
-			if [ $thirdMenuOption -eq 1 ]
-			    then
-			    	chmod +r $file
-			    	echo "Dono agora tem permissão de leitura"
-			    	read_enter
-		            elif [ $thirdMenuOption -eq 2 ]
-			    	then
-			    	    chmod g+r $file
-			    	    echo "Grupo agora tem permissão de leitura"
-			    	    read_enter
-			    elif [ $thirdMenuOption -eq 3 ]
-			    	then
-				    chmod o+r $file
-			    	    echo "Outros agora tem permissão de leitura"
-			    	    read_enter
-		            elif [ $thirdMenuOption -eq 4 ]
-			    	then
-				    chmod ugo+r $file
-			    	    echo "Todos agora tem permissão de leitura"
-			    	    read_enter
+				elif [ $fourthMenuOption -eq 2 ]
+				then
+				if [ $thirdMenuOption -eq 1 ]
+					then
+						chmod u+w $file
+						echo -e "\nDono agora tem permissão de escrita"
+						read_enter
+					elif [ $thirdMenuOption -eq 2 ]
+						then
+							chmod g+w $file
+							echo -e "\nGrupo agora tem permissão de escrita"
+							read_enter
+					elif [ $thirdMenuOption -eq 3 ]
+						then
+						chmod o+w $file
+							echo -e "\nOutros agora tem permissão de escrita"
+							read_enter
+					elif [ $thirdMenuOption -eq 4 ]
+						then
+						chmod ugo+w $file
+							echo -e "\nTodos agora tem permissão de escrita"
+							read_enter
+				fi
+				break
+			elif [ $fourthMenuOption -eq 3 ]
+				then
+				if [ $thirdMenuOption -eq 1 ]
+					then
+						chmod u+r $file
+						echo -e "\nDono agora tem permissão de leitura"
+						read_enter
+						elif [ $thirdMenuOption -eq 2 ]
+						then
+							chmod g+r $file
+							echo -e "\nGrupo agora tem permissão de leitura"
+							read_enter
+					elif [ $thirdMenuOption -eq 3 ]
+						then
+						chmod o+r $file
+							echo -e "\nOutros agora tem permissão de leitura"
+							read_enter
+						elif [ $thirdMenuOption -eq 4 ]
+						then
+						chmod ugo+r $file
+							echo -e "\nTodos agora tem permissão de leitura"
+							read_enter
+				fi
+				break
+			elif [ $fourthMenuOption -eq 4 ]
+				then
+				if [ $thirdMenuOption -eq 1 ]
+					then
+						chmod u+x $file
+						echo -e "\nDono agora tem permissão de execução"
+						read_enter
+						elif [ $thirdMenuOption -eq 2 ]
+						then
+							chmod g+x $file
+							echo -e "\nGrupo agora tem permissão de execução"
+							read_enter
+					elif [ $thirdMenuOption -eq 3 ]
+						then
+						chmod o+x $file
+							echo -e "\nOutros agora tem permissão de execução"
+							read_enter
+						elif [ $thirdMenuOption -eq 4 ]
+						then
+						chmod ugo+x $file
+							echo -e "\nTodos agora tem permissão de execução"
+							read_enter
+				fi
+				break
+			else
+				break
 			fi
-			break
-		elif [ $fourthMenuOption -eq 4 ]
-		    then
-			if [ $thirdMenuOption -eq 1 ]
-			    then
-			    	chmod +x $file
-			    	echo "Dono agora tem permissão de execução"
-			    	read_enter
-		            elif [ $thirdMenuOption -eq 2 ]
-			    	then
-			    	    chmod g+x $file
-			    	    echo "Grupo agora tem permissão de execução"
-			    	    read_enter
-			    elif [ $thirdMenuOption -eq 3 ]
-			    	then
-				    chmod o+x $file
-			    	    echo "Outros agora tem permissão de execução"
-			    	    read_enter
-		            elif [ $thirdMenuOption -eq 4 ]
-			    	then
-				    chmod ugo+x $file
-			    	    echo "Todos agora tem permissão de execução"
-			    	    read_enter
-			fi
-			break
-		else
-		    break
-	    fi
-	done
-    fi
+		done
+		fi
 }
 
 option=0
