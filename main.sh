@@ -16,9 +16,23 @@ create_user () {
     echo -e "\n\nDigite o nome do usuário:"
     read username
 
+	if [ "$username" = "" ]
+		then
+			echo -e '\nErro: nome do usuário não pode ser nulo'
+			read_enter
+			return
+	fi
+
 	echo -e "\nDigite a nova senha:"
     read -s password
 	echo
+
+	if [ "$password" = "" ]
+		then
+			echo -e '\nErro: senha do usuário não pode ser nula'
+			read_enter
+			return
+	fi
     
     echo -e '\nCriando usuário...'
     sudo useradd -p $password $username ||
@@ -39,6 +53,13 @@ delete_user () {
     echo -e "\n\nDigite o nome do usuário:"
     read username
 
+	if [ "$username" = "" ]
+		then
+			echo -e '\nErro: nome do usuário não pode ser nulo'
+			read_enter
+			return
+	fi
+
     echo -e '\nExcluindo usuário...'
     sudo userdel $username ||
     {
@@ -56,31 +77,38 @@ open_permissions () {
 
     secondMenuOption=0
     while [ $secondMenuOption -ne 99 ]
-	do
-	    clear
-	    echo '--- Você está editando as permissões de acesso'
+		do
+			clear
+			echo '--- Você está editando as permissões de acesso'
 
-	    echo -e '\n--- Menu ---'
-	    echo -e '\n1) Modificar dono de arquivo ou diretório'
-	    echo '2) Modificar grupo dono de arquivo ou diretório'
-	    echo '3) Modificar permissões de arquivo ou diretório'
+			echo -e '\n--- Menu ---'
+			echo -e '\n1) Modificar dono de arquivo ou diretório'
+			echo '2) Modificar grupo dono de arquivo ou diretório'
+			echo '3) Modificar permissões de arquivo ou diretório'
 
-	    echo -e '\nDigite uma opção ou digite 99 para voltar: '
-	    read secondMenuOption
+			echo -e '\nDigite uma opção ou digite 99 para voltar: '
+			read secondMenuOption
 
-		if [ $secondMenuOption -eq 1 ]
-			then
-				change_owner_user
-        elif [ $secondMenuOption -eq 2 ]
-		    then
-				change_owner_group
-		elif [ $secondMenuOption -eq 3 ]
-		    then
-				change_file_permissions
-		elif [ $secondMenuOption -eq 99 ]
-			then
-				break
-	    fi
+			if [ "$secondMenuOption" = "" ]
+				then
+					echo -e '\nErro: opção inválida'
+					read_enter
+					return
+			fi
+
+			if [ $secondMenuOption -eq 1 ]
+				then
+					change_owner_user
+			elif [ $secondMenuOption -eq 2 ]
+				then
+					change_owner_group
+			elif [ $secondMenuOption -eq 3 ]
+				then
+					change_file_permissions
+			elif [ $secondMenuOption -eq 99 ]
+				then
+					break
+			fi
 	done
 }
 
@@ -91,8 +119,22 @@ change_owner_group() {
     echo -e '\n\nDigite o nome do arquivo ou diretório:'
     read objectName
 
+	if [ "$objectName" = "" ]
+		then
+			echo -e '\nErro: nome de arquivo ou diretório inválido'
+			read_enter
+			return
+	fi
+
     echo -e '\nDigite o nome do grupo:'
     read group
+
+	if [ "$group" = "" ]
+		then
+			echo -e '\nErro: nome de grupo inválido'
+			read_enter
+			return
+	fi
 
     echo -e '\nAlterando grupo dono...'
     sudo chgrp $group $objectName || 
@@ -113,8 +155,22 @@ change_owner_user() {
     echo -e '\n\nDigite o nome do arquivo ou diretório:'
     read objectName
 
+	if [ "$objectName" = "" ]
+		then
+			echo -e '\nErro: nome de arquivo ou diretório inválido'
+			read_enter
+			return
+	fi
+
     echo -e '\nDigite o nome do novo dono:'
     read username
+
+	if [ "$username" = "" ]
+		then
+			echo -e '\nErro: nome de dono inválido'
+			read_enter
+			return
+	fi
 
     echo -e '\nAlterando dono...'
     sudo chown $username $objectName || 
@@ -291,6 +347,13 @@ while [ $option -ne 99 ]
 
         echo -e '\nDigite uma opcao ou digite 99 para encerrar:'
         read option
+
+		if [ "$option" = "" ]
+		then
+			echo -e '\nErro: opção inválida'
+			read_enter
+			return
+		fi
 
         if [ $option -eq 1 ]
             then
