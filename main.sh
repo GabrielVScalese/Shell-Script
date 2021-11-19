@@ -236,7 +236,7 @@ change_file_permissions(){
 					if [ $thirdMenuOption -eq 1 ]
 				then
 					chmod u=- $file
-					echo "Removidas todas as permissões do dono"
+					echo -e "\nRemovidas todas as permissões do dono"
 					read_enter
 				elif [ $thirdMenuOption -eq 2 ]
 					then
@@ -343,7 +343,7 @@ while [ $option -ne 99 ]
         echo -e '\n--- Menu ---'
         echo -e '\n1) Criar Usuario'
         echo '2) Excluir usuario'
-        echo '3) Permissoes de arquivo'
+        echo '3) Permissoes de arquivo ou diretório'
 
         echo -e '\nDigite uma opcao ou digite 99 para encerrar:'
         read option
