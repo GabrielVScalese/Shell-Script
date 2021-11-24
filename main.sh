@@ -190,7 +190,7 @@ change_file_permissions(){
     echo -e 'Digite o arquivo ou diretório que deseja modificar suas permissões: \n'
     read file
 
-    if [ ! -d "$file" && ! -f "$file"]
+    if [ ! -d "$file" && ! -f "$file" && "$file" == ""]
 		then
 			echo "Arquivo ou diretório não existe!"
 			read enter
